@@ -1,9 +1,2 @@
-*.mp4
-.kaggle
-samples
-
-output
-output2
-output3
-gomi
-font.ttf
+videos
+datasets
