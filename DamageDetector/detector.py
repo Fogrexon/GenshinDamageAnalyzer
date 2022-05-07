@@ -4,6 +4,8 @@ from sklearn.preprocessing import binarize
 from DamageDetector.utils import element_color_HSV, matching_number
 import numpy as np
 
+counter = 0
+
 class Detector:
   def __init__(self, scale):
     self.scale = scale
@@ -15,12 +17,13 @@ class Detector:
     color = element_color_HSV[key]
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV_FULL)
     binarized = cv2.inRange(hsv_image,
-      (max(color[0] - 5, 0), max(color[1] - 15, 0), max(color[2] - 20, 0)),
-      (min(255, color[0] + 5), min(255, color[1] + 15), min(color[2] + 20, 255))
+      (max(color[0] - 5, 0), max(color[1] - 25, 0), max(color[2] - 20, 0)),
+      (min(255, color[0] + 5), min(255, color[1] + 25), min(color[2] + 20, 255))
     )
     return binarized
   
   def get_number(self, image, key):
+    global counter
     height, _, _ = image.shape
     binarized = self.binarize(image, key)
     closing = cv2.dilate(binarized,(2, 2),iterations = 1)
@@ -35,7 +38,6 @@ class Detector:
       x2, y2, w2, h2 = nextRect
       if h2 < 0.8 * height or w2 / h2 > 1:
         continue
-      # cv2.imwrite("./output/{}.png".format(imageCounter), closing[y2:y2+h2,x2:x2+w2])
       num = matching_number(closing[y2:y2+h2,x2:x2+w2])
       lists.append((num, x2))
     
