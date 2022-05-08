@@ -1,0 +1,13 @@
+python/
+  demo.py/
+  video/
+  --exp_file yolox_s.py/
+  --device gpu/
+  --fp16/
+  --path ../videos/long2.mp4/
+  --ckpt .\best_ckpt.pth/
+  --conf 0.3/
+  --nms 0.3/
+  --legacy false/
+  --fuse false/
+  --trt false
