@@ -24,7 +24,7 @@ class Detector:
   def get_number(self, image):
     global counter
     height, _, _ = image.shape
-    binarized = self.binarize(image, self.key)
+    binarized = self.binarize(image)
     closing = cv2.dilate(binarized,(2, 2),iterations = 1)
     thresh = cv2.adaptiveThreshold(closing, 255, 1, 1, 5, 2)
     contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -50,7 +50,7 @@ class Detector:
   def get_damage_outline(self, image):
     height, width, _ = image.shape
     resized = cv2.resize(image, (int(width * self.scale), int(height * self.scale)))
-    binarized = self.binarize(resized, self.key)
+    binarized = self.binarize(resized)
     thresh = cv2.adaptiveThreshold(binarized, 255, 1, 1, 7, 2)
     contours, _ = cv2.findContours(
         thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -68,13 +68,13 @@ class Detector:
     return number_outlines
 
   def get_damages(self, image):
-    outlines = self.get_damage_outline(image, self.key)
+    outlines = self.get_damage_outline(image)
     result = []
     for rect in outlines:
       x, y, w, h = rect
       
       cropped = image[y:y+h, x:x+w, :]
-      num = self.get_number(cropped, self.key)
+      num = self.get_number(cropped)
       if num < 1000:
         continue
       result.append({
