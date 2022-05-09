@@ -13,7 +13,6 @@ class Predictor(object):
         decoder=None,
         device="cpu",
         fp16=False,
-        legacy=False,
     ):
         self.model = model
         self.cls_names = cls_names
@@ -24,7 +23,7 @@ class Predictor(object):
         self.test_size = exp.test_size
         self.device = device
         self.fp16 = fp16
-        self.preproc = ValTransform(legacy=legacy)
+        self.preproc = ValTransform(legacy=False)
 
     def inference(self, img):
         img_info = {"id": 0}

@@ -1,1 +1,1 @@
-from .Predictor import Predictor
+from .Detector import Detector
