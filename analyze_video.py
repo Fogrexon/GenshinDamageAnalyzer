@@ -6,7 +6,7 @@ def analyze_video(video_controller, key, progress_callback):
   video_info = video_controller.get_video_info()
   damage_dropout = int(video_info["fps"] / 4)
   enemy_dropout = int(video_info["fps"] / 2)
-  progress_dropout = int(video_info["fps"])
+  progress_dropout = int(video_info["fps"] / 2)
   frame_infos = {
     "fps": video_info["fps"],
     "frame_count": video_info["frame_count"],
@@ -24,7 +24,7 @@ def analyze_video(video_controller, key, progress_callback):
   current_index = 0
   video_controller.seek(current_index)
   
-  for i in range(frame_count):
+  for i in range(int(frame_count)):
     frame = video_controller.next()
     if frame is None:
       continue
@@ -35,6 +35,7 @@ def analyze_video(video_controller, key, progress_callback):
       damages = damage_detector.get_damages(frame)
       for damage in damages:
         damage_info["total"] += damage["number"]
+        damage["rect"] = list(damage["rect"])
         damage_info["damages"].append(damage)
       frame_infos["damages"].append(damage_info)
     
@@ -44,13 +45,13 @@ def analyze_video(video_controller, key, progress_callback):
       max_score_enemy = {"type": "none", "bbox": None, "score": 0}
       for bbox, cls, score in zip(bboxes, clses, scores):
         if score > 0.5 and score > max_score_enemy["score"]:
-          max_score_enemy = {"bbox": bbox, "type": cls, "score": score}
+          max_score_enemy = {"bbox": list(map(int, bbox)), "type": cls, "score": int(score)}
       frame_infos["enemies"].append(max_score_enemy)
 
     # progress callback
-    if i % progress_dropout == 0:
-      progress_callback(i / frame_count)
-
+    # if i % progress_dropout == 0:
+      # progress_callback(i / frame_count)
+  print(frame_infos)
   return frame_infos
 
     

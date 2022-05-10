@@ -1,7 +1,7 @@
 import eel
 import wx
 from video_controller import VideoController
-import analyze_video
+from analyze_video import analyze_video
 import cv2
 import base64
 
@@ -39,14 +39,14 @@ def set_frame(index):
   controller.seek(index)
 
 def progress_callback(progress):
-  eel.progress(progress)
+  eel.progress(progress)()
 
 @eel.expose
 def analyze(key):
   global controller
   if controller is None:
     return None
-  analyze_video(controller, key, progress_callback)
+  return analyze_video(controller, key, progress_callback)
 
 def handle_exit(a, b):
   import sys
