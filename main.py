@@ -1,6 +1,6 @@
 import eel
 import wx
-import VideoController
+from video_controller import VideoController
 import analyze_video
 import cv2
 import base64
@@ -19,14 +19,14 @@ def get_local_file(wildcard="*"):
       path = None
   dialog.Destroy()
   controller = VideoController(path)
-  return path
+  return controller.get_video_info()
 
 def convert_frame(frame):
   if frame is None:
     return None
   _, jpg = cv2.imencode('.jpg', frame)
   base64_image = base64.b64encode(jpg)
-  return base64_image
+  return "data:image/jpg;base64," + base64_image.decode("ascii")
 
 @eel.expose
 def get_frame():
@@ -61,5 +61,5 @@ if __name__ == "__main__":
       '--disable-web-security',
       '–-allow-file-access-from-files'
     ],
-    port="8000"
+    port=8000
   )
