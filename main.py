@@ -24,6 +24,7 @@ def get_local_file(wildcard="*"):
 def convert_frame(frame):
   if frame is None:
     return None
+  frame = cv2.resize(frame, (640, 360))
   _, jpg = cv2.imencode('.jpg', frame)
   base64_image = base64.b64encode(jpg)
   return "data:image/jpg;base64," + base64_image.decode("ascii")
@@ -31,7 +32,10 @@ def convert_frame(frame):
 @eel.expose
 def get_frame():
   global controller
-  return convert_frame(controller.next())
+  return dict(
+    frame=convert_frame(controller.next()),
+    current=controller.get_video_info()["current"]
+  )
 
 @eel.expose
 def set_frame(index):
@@ -39,6 +43,7 @@ def set_frame(index):
   controller.seek(index)
 
 def progress_callback(progress):
+  # print("analyzing...", int(progress * 100), "%")
   eel.progress(progress)()
 
 @eel.expose

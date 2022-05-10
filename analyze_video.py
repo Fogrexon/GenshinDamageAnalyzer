@@ -4,7 +4,7 @@ from EnemyDetector import Detector as EnemyDetector
 
 def analyze_video(video_controller, key, progress_callback):
   video_info = video_controller.get_video_info()
-  damage_dropout = int(video_info["fps"] / 4)
+  damage_dropout = int(video_info["fps"] / 10)
   enemy_dropout = int(video_info["fps"] / 2)
   progress_dropout = int(video_info["fps"] / 2)
   frame_infos = {
@@ -49,9 +49,8 @@ def analyze_video(video_controller, key, progress_callback):
       frame_infos["enemies"].append(max_score_enemy)
 
     # progress callback
-    # if i % progress_dropout == 0:
-      # progress_callback(i / frame_count)
-  print(frame_infos)
+    if i % progress_dropout == 0:
+      progress_callback(i / frame_count)
   return frame_infos
 
     
