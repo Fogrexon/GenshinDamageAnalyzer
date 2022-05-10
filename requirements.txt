@@ -1,8 +1,0 @@
-eel
-opencv
-pytorch
-torchvision
-numpy
-matplotlib
-pandas
-scikit-learn
