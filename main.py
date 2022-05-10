@@ -2,6 +2,8 @@ import eel
 import wx
 import VideoController
 import analyze_video
+import cv2
+import base64
 
 controller = None
 
@@ -19,14 +21,22 @@ def get_local_file(wildcard="*"):
   controller = VideoController(path)
   return path
 
+def convert_frame(frame):
+  if frame is None:
+    return None
+  _, jpg = cv2.imencode('.jpg', frame)
+  base64_image = base64.b64encode(jpg)
+  return base64_image
+
 @eel.expose
 def get_frame():
   global controller
-  return controller.next()
+  return convert_frame(controller.next())
+
 @eel.expose
 def set_frame(index):
   global controller
-  return controller.seek(index)
+  controller.seek(index)
 
 def progress_callback(progress):
   eel.progress(progress)
