@@ -19,7 +19,7 @@ def analyze_video(video_controller, key, progress_callback):
   }
   frame_count = video_info['frame_count']
 
-  damage_detector = DamageDetector(scale=0.5, key=key)
+  damage_detector = DamageDetector(scale=0.6, key=key)
   enemy_detector = EnemyDetector()
   current_index = 0
   video_controller.seek(current_index)

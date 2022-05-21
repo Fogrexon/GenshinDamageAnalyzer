@@ -61,7 +61,7 @@ class Detector:
       x, y, w, h = self.restore_rect(rect)
       
 
-      if h < height / 30 or w / (h * 0.8) < 3:
+      if h < height / 40 or w / (h * 0.8) < 3:
         continue
       number_outlines.append((x, y, w, h))
 
